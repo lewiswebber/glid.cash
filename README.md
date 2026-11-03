@@ -1,0 +1,2 @@
+# glid.cash
+Glid
