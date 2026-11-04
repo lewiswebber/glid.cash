@@ -15,16 +15,13 @@
     <div class="hero__tagline">
       <p>Bitcoin. Made simple.</p>
       <p class="hero__tagline-sub">Multi-wallet, Self-custody,<br>Open-source.</p>
+      <span class="hero__badge">Coming soon</span>
     </div>
 
     <h1 class="hero__logo">
       <img src="/logo.svg" width="131" height="62" alt="Glid">
     </h1>
 
-    <p class="hero__meta">
-      Coming soon<br>
-      <span>&copy;2026</span>
-    </p>
   </main>
 </template>
 
@@ -86,16 +83,18 @@
     }
   }
 
-  &__meta {
-    position: absolute;
-    right: 2vw;
-    bottom: 3vh;
-    margin: 0;
+  &__badge {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 15px 30px;
+    border: 1px solid rgb(255 255 255 / 50%);
+    border-radius: 999px;
     font-family: 'Geist Mono', ui-monospace, monospace;
-    font-size: max(10px, 1vw);
-    line-height: normal;
-    color: #fff;
-    opacity: 0.5;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,.7);
+
     text-transform: uppercase;
     white-space: nowrap;
   }
@@ -112,9 +111,6 @@
       left: 4vw;
     }
 
-    &__meta {
-      display: none;
-    }
   }
 
   /*
@@ -122,6 +118,10 @@
   Crop the phone above the screen; keep the text anchored to the bottom.
   */
   @media (max-width: 767px) {
+    &__badge {
+      display: none;
+    }
+
     &__phone {
       top: min(-126px, calc(100vh - 1000px));
       top: min(-126px, calc(100dvh - 1000px));
@@ -153,9 +153,6 @@
       transform: translateX(-50%);
     }
 
-    &__meta {
-      display: none;
-    }
   }
 }
 </style>
