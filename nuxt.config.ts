@@ -24,7 +24,7 @@ export default defineNuxtConfig({
       title,
       meta: [
         { name: 'description', content: description },
-        { name: 'theme-color', content: '#000000' },
+        { name: 'theme-color', content: '#7c7c7c' },
         { name: 'color-scheme', content: 'dark' },
         { name: 'apple-mobile-web-app-title', content: 'Glid' },
         { name: 'format-detection', content: 'telephone=no' },
