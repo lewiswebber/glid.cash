@@ -33,11 +33,11 @@
   Desktop: Figma frame 1665 × 945.
   Horizontal values and sizes in vw (px / 16.65), vertical offsets in vh (px / 9.45).
 */
-/* Fixed to the viewport so nothing can scroll; the gradient is on <html> (main.css) */
+/* The root canvas paints the full-bleed gradient (main.css). */
 .hero {
   position: fixed;
   inset: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .hero__phone {
@@ -106,12 +106,13 @@
 
 /*
   Mobile: Figma frame 402 × 874, in px.
-  Everything is anchored to the bottom so the composition holds on taller/shorter phones.
+  Crop the phone above the screen; keep the text anchored to the bottom.
 */
 @media (max-width: 767px) {
   .hero__phone {
-    top: auto;
-    bottom: 309px;
+    top: min(-126px, calc(100vh - 1000px));
+    top: min(-126px, calc(100dvh - 1000px));
+    bottom: auto;
     left: 50%;
     width: 390px;
     margin-left: -220px;
