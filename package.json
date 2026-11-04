@@ -13,5 +13,8 @@
     "@nuxt/fonts": "^0.11.4",
     "lenis": "^1.3.27",
     "nuxt": "^3.21.11"
+  },
+  "devDependencies": {
+    "sass": "^1.107.1"
   }
 }

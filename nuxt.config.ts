@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     port: 3000,
   },
   modules: ['@nuxt/fonts'],
-  css: ['lenis/dist/lenis.css', '~/assets/css/main.css'],
+  css: ['lenis/dist/lenis.css', '~/assets/scss/main.scss'],
 
   runtimeConfig: {
     public: { siteUrl },

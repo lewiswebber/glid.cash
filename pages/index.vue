@@ -18,7 +18,7 @@
     </div>
 
     <h1 class="hero__logo">
-      <img src="/logo.svg" width="130.73" height="62.1597" alt="Glid">
+      <img src="/logo.svg" width="131" height="62" alt="Glid">
     </h1>
 
     <p class="hero__meta">
@@ -28,120 +28,134 @@
   </main>
 </template>
 
-<style scoped>
-/*
-  Desktop: Figma frame 1665 × 945.
-  Horizontal values and sizes in vw (px / 16.65), vertical offsets in vh (px / 9.45).
-*/
-/* The root canvas paints the full-bleed gradient (main.css). */
+<style scoped lang="scss">
+/* Desktop layout uses rounded viewport-relative sizes and offsets. */
+/* The root canvas paints the full-bleed gradient (main.scss). */
 .hero {
   position: fixed;
   inset: 0;
   overflow: visible;
-}
 
-.hero__phone {
-  position: absolute;
-  top: -9.1vh;
-  left: 50%;
-  /* Sized off viewport height (904 / 945 tall), capped at 40vw so it can't run into the tagline */
-  width: min(53.97vh, 40vw);
-  transform: translateX(-50%);
-  pointer-events: none;
-}
+  &__phone {
+    position: absolute;
+    top: -9vh;
+    left: 50%;
+    /* Sized off viewport height (904 / 945 tall), capped at 40vw so it can't run into the tagline */
+    width: min(54vh, 40vw);
+    transform: translateX(-50%);
+    pointer-events: none;
 
-.hero__phone img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
 
-.hero__tagline {
-  position: absolute;
-  top: 47.83vh;
-  left: 4.144vw;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 2.643vw;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  color: #fff;
-}
+  &__tagline {
+    position: absolute;
+    top: 48vh;
+    left: 4vw;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 2.8vw;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: #fff;
 
-.hero__tagline p {
-  margin: 0;
-}
+    p {
+      margin: 0;
+    }
 
-.hero__tagline .hero__tagline-sub {
-  margin-top: 0.418em;
-  opacity: 0.5;
-}
+    .hero__tagline-sub {
+      margin-top: 0.1em;
+      opacity: 0.5;
+    }
+  }
 
-.hero__logo {
-  position: absolute;
-  bottom: 4.004vh;
-  left: 3.844vw;
-  width: 6.667vw;
-  margin: 0;
-}
+  &__logo {
+    position: absolute;
+    bottom: 4vh;
+    left: 4vw;
+    width: 7vw;
+    margin: 0;
 
-.hero__logo img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
 
-.hero__meta {
-  position: absolute;
-  right: 2.282vw;
-  bottom: 3.175vh;
-  margin: 0;
-  font-family: 'Geist Mono', ui-monospace, monospace;
-  font-size: max(10px, 0.841vw);
-  line-height: normal;
-  color: #fff;
-  opacity: 0.5;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
+  &__meta {
+    position: absolute;
+    right: 2vw;
+    bottom: 3vh;
+    margin: 0;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: max(10px, 1vw);
+    line-height: normal;
+    color: #fff;
+    opacity: 0.5;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
 
-/*
+  @media (min-width: 768px) {
+    &__logo {
+      top: 5vh;
+      bottom: auto;
+    }
+
+    &__tagline {
+      top: auto;
+      bottom: 7vh;
+      left: 4vw;
+    }
+
+    &__meta {
+      display: none;
+    }
+  }
+
+  /*
   Mobile: Figma frame 402 × 874, in px.
   Crop the phone above the screen; keep the text anchored to the bottom.
-*/
-@media (max-width: 767px) {
-  .hero__phone {
-    top: min(-126px, calc(100vh - 1000px));
-    top: min(-126px, calc(100dvh - 1000px));
-    bottom: auto;
-    left: 50%;
-    width: 390px;
-    margin-left: -220px;
-    transform: none;
-  }
+  */
+  @media (max-width: 767px) {
+    &__phone {
+      top: min(-126px, calc(100vh - 1000px));
+      top: min(-126px, calc(100dvh - 1000px));
+      bottom: auto;
+      left: 50%;
+      width: 390px;
+      margin-left: -220px;
+      transform: none;
+    }
 
-  .hero__tagline {
-    top: auto;
-    bottom: calc(162px + env(safe-area-inset-bottom));
-    left: 50%;
-    width: 340px;
-    font-size: 26px;
-    text-align: center;
-    transform: translateX(-50%);
-  }
+    &__tagline {
+      top: auto;
+      bottom: calc(162px + env(safe-area-inset-bottom));
+      left: 50%;
+      width: 340px;
+      font-size: 26px;
+      text-align: center;
+      transform: translateX(-50%);
 
-  .hero__tagline .hero__tagline-sub {
-    margin-top: 0.1em;
-  }
+      .hero__tagline-sub {
+        margin-top: 0.1em;
+      }
+    }
 
-  .hero__logo {
-    bottom: calc(61px + env(safe-area-inset-bottom));
-    left: 50%;
-    width: 85.76px;
-    transform: translateX(-50%);
-  }
+    &__logo {
+      bottom: calc(61px + env(safe-area-inset-bottom));
+      left: 50%;
+      width: 86px;
+      transform: translateX(-50%);
+    }
 
-  .hero__meta {
-    display: none;
+    &__meta {
+      display: none;
+    }
   }
 }
 </style>
