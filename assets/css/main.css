@@ -4,14 +4,33 @@
   box-sizing: border-box;
 }
 
+/*
+  Single-screen page: no scrolling, and the gradient lives on <html> so it
+  paints the whole canvas, including the areas behind iOS Safari's status bar
+  and toolbar (otherwise those show as black bars).
+*/
 html,
+html.lenis,
+html.lenis body,
 body {
+  height: 100%;
   margin: 0;
-  background: #000;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+html {
+  background: #000 linear-gradient(173.24deg, #7c7c7c 0%, #2b4e64 49.523%, #000 109.57%) no-repeat;
   color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+@media (max-width: 767px) {
+  html {
+    background-image: linear-gradient(155.6deg, #7c7c7c 0%, #2b4e64 49.523%, #000 109.57%);
+  }
 }
 
 img,

@@ -33,12 +33,11 @@
   Desktop: Figma frame 1665 × 945.
   Horizontal values and sizes in vw (px / 16.65), vertical offsets in vh (px / 9.45).
 */
+/* Fixed to the viewport so nothing can scroll; the gradient is on <html> (main.css) */
 .hero {
-  position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
+  position: fixed;
+  inset: 0;
   overflow: hidden;
-  background-image: linear-gradient(173.24deg, #7c7c7c 0%, #2b4e64 49.523%, #000 109.57%);
 }
 
 .hero__phone {
@@ -110,10 +109,6 @@
   Everything is anchored to the bottom so the composition holds on taller/shorter phones.
 */
 @media (max-width: 767px) {
-  .hero {
-    background-image: linear-gradient(155.6deg, #7c7c7c 0%, #2b4e64 49.523%, #000 109.57%);
-  }
-
   .hero__phone {
     top: auto;
     bottom: 309px;
