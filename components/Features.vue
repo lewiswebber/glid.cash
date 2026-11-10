@@ -1,30 +1,49 @@
 <script setup>
-const props = defineProps({ contents: { type: Object, required: true } })
+const props = defineProps({
+  contents: {
+    type: Object,
+    required: true
+  }
+})
 
-// Desktop cards reserve space for the enlarged images; mobile keeps its text-only stack.
+// Desktop cards stack; mobile cards flow naturally to fit text and images.
 const stack = {
-  desktop: { unit: 'vw', step: 5, itemHeight: 48, scrollHeight: 53, imageHeight: 45 },
-  mobile: { unit: 'svh', step: 10, itemHeight: 40, scrollHeight: 50 },
+  desktop: {
+    unit: 'vw',
+    step: 5,
+    itemHeight: 48,
+    scrollHeight: 53,
+    imageHeight: 45
+  },
+  mobile: {
+    unit: 'svh',
+    step: 10,
+    itemHeight: 40,
+    scrollHeight: 50
+  }
 }
 const itemsStyle = computed(() => {
   const count = props.contents.contents.length
-  const { desktop, mobile } = stack
+  const {
+    desktop,
+    mobile
+  } = stack
   return {
     '--stack-height-desktop': `${count * desktop.scrollHeight}${desktop.unit}`,
     '--stack-height-mobile': `${count * mobile.scrollHeight}${mobile.unit}`,
     '--stack-image-height': `${desktop.imageHeight}${desktop.unit}`,
     '--stack-bottom-desktop': `${count * desktop.step + desktop.itemHeight}${desktop.unit}`,
-    '--stack-bottom-mobile': `${count * mobile.step + mobile.itemHeight}${mobile.unit}`,
+    '--stack-bottom-mobile': `${count * mobile.step + mobile.itemHeight}${mobile.unit}`
   }
 })
 const getItemStyle = index => ({
   '--stack-top-desktop': `${(index + 1) * stack.desktop.step}${stack.desktop.unit}`,
-  '--stack-top-mobile': `${(index + 1) * stack.mobile.step}${stack.mobile.unit}`,
+  '--stack-top-mobile': `${(index + 1) * stack.mobile.step}${stack.mobile.unit}`
 })
 </script>
 
 <template>
-  <section class="section ">
+  <section class="section features-section">
     <div class="features">
       <!-- <div class="features__title layout">
         <div class="layout__third monospace opacity__50">
@@ -53,12 +72,38 @@ const getItemStyle = index => ({
         </article>
       </div>
     </div>
+    <div class="features__bottom-overlay" aria-hidden="true" />
   </section>
 </template>
 
 <style scoped lang="scss">
 @use '~/assets/scss/variables' as *;
+
+.features-section {
+  @media (max-width: $break-s) {
+    // Clip the fixed gradient to this section as it enters and leaves the viewport.
+    clip-path: inset(0);
+  }
+}
+
 .features {
+  &__bottom-overlay {
+    display: none;
+
+    @media (max-width: $break-s) {
+      display: block;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20svh;
+      opacity: 0;
+      z-index: 10;
+      background: linear-gradient(0deg, var(--bgcolor) 3%, transparent 100%);
+      pointer-events: none;
+    }
+  }
+
   position: relative;
   padding-bottom: 1vw;
   &__title h2 {
@@ -73,8 +118,7 @@ const getItemStyle = index => ({
     --stack-bottom: var(--stack-bottom-desktop);
     min-height: var(--stack-height-desktop);
     @media (max-width: $break-s) {
-      --stack-bottom: var(--stack-bottom-mobile);
-      min-height: var(--stack-height-mobile);
+      min-height: 0;
       padding-top: 10svh;
     }
   }
@@ -86,8 +130,10 @@ const getItemStyle = index => ({
     top: var(--stack-top-desktop);
     height: calc(var(--stack-bottom) - var(--stack-top-desktop));
     @media (max-width: $break-s) {
-      top: var(--stack-top-mobile);
-      height: calc(var(--stack-bottom) - var(--stack-top-mobile));
+      position: relative;
+      top: auto;
+      height: auto;
+      padding-bottom: 60px;
     }
 
     .layout {
@@ -105,6 +151,10 @@ const getItemStyle = index => ({
     .layout__second {
       display: flex;
       justify-content: space-between;
+
+      @media (max-width: $break-s) {
+        flex-direction: column;
+      }
     }
   }
 
@@ -122,7 +172,15 @@ const getItemStyle = index => ({
     }
 
     @media (max-width: $break-s) {
-      display: none;
+      width: 100%;
+      // Mobile layout has 20px gutters on each side.
+      height: calc((100vw - 40px) * 8 / 7 - 30px);
+      aspect-ratio: auto;
+
+      img {
+        display: block;
+        object-position: center top;
+      }
     }
   }
 
@@ -131,12 +189,14 @@ const getItemStyle = index => ({
     width: 42.5%;
     @media (max-width: $break-s) {
       width: 100%;
+      padding-bottom: 24px;
     }
 
     h3 {
       margin-bottom: 8vw;
       @media (max-width: $break-s) {
-        margin-bottom: 60px;
+        margin-bottom: 32px;
+        padding-right: 40px;
       }
     }
   }
@@ -148,7 +208,7 @@ const getItemStyle = index => ({
     }
 
     @media (max-width: $break-s) {
-      margin-top: 15svh;
+      margin-top: 0;
     }
   }
 }

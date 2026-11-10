@@ -12,7 +12,7 @@
       </nav> -->
     </div>
     <div class="nav nav__right monospace">
-      <a href="mailto:lewis@stud.house" class="contact pill hover_effect"><span>Contact</span></a>
+      <a href="mailto:hello@stud.house" class="contact pill hover_effect"><span>Contact</span></a>
     </div>
   </header>
 </template>
@@ -66,13 +66,17 @@
   }
 
   @media (max-width: $break-s) {
+
+    top: auto;
+    bottom: 0;
+
     .nav {
       display: none;
     }
 
     .layout__third {
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
     }
 
     .logo {
