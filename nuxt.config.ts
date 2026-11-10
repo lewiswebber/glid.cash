@@ -9,15 +9,10 @@ export default defineNuxtConfig({
     host: '0.0.0.0',
     port: 3000,
   },
-  modules: ['@nuxt/fonts'],
   css: ['lenis/dist/lenis.css', '~/assets/scss/main.scss'],
 
   runtimeConfig: {
     public: { siteUrl },
-  },
-
-  fonts: {
-    families: [{ name: 'Geist Mono', provider: 'google', weights: [400] }],
   },
 
   app: {

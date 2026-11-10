@@ -1,37 +1,60 @@
+<script setup>
+import { features } from '~/assets/content/home'
+const homepage = ref(null)
+const { $initHomeAnimations } = useNuxtApp()
+let cleanup
+onMounted(() => { cleanup = $initHomeAnimations?.(homepage.value) })
+onBeforeUnmount(() => cleanup?.())
+</script>
+
 <template>
-  <main class="hero">
-    <picture class="hero__phone">
-      <source srcset="/phone.avif" type="image/avif">
-      <img
-        src="/phone.webp"
-        width="510"
-        height="904"
-        alt="Glid app showing a wallet balance of $12,708.48"
-        fetchpriority="high"
-        decoding="async"
-      >
-    </picture>
+  <div ref="homepage">
+    <SiteHeader />
+    <main id="top">
+      <section class="hero">
+        <div class="hero__content" effect__fadeOut>
+          <picture class="hero__phone">
+            <source srcset="/phone.avif" type="image/avif">
+            <img src="/phone.webp" width="510" height="904" alt="Glid app showing a wallet balance of $12,708.48"
+              fetchpriority="high" decoding="async">
+          </picture>
 
-    <div class="hero__tagline">
-      <p>Bitcoin. Made simple.</p>
-      <p class="hero__tagline-sub">Multi-wallet, Self-custody,<br>Open-source.</p>
-      <span class="hero__badge">Coming soon</span>
-    </div>
+          <div class="hero__tagline">
+            <h1 class="text-lead">Bitcoin. Made simple.</h1>
+            <p class="hero__tagline-sub text-lead">Multi-wallet, Self-custody,<br>Open-source.</p>
+            <span class="hero__badge monospace pill">Coming soon</span>
+          </div>
 
-    <h1 class="hero__logo">
-      <img src="/logo.svg" width="131" height="62" alt="Glid">
-    </h1>
 
-  </main>
+
+        </div>
+        <!-- <div class="overlay overlay__grey hide__mobile" effect__overlayIn aria-hidden="true"></div> -->
+      </section>
+      <HomeIntro />
+      <Features :contents="features" id="features" />
+    </main>
+    <SiteFooter />
+  </div>
 </template>
 
 <style scoped lang="scss">
+@use '~/assets/scss/variables' as *;
 /* Desktop layout uses rounded viewport-relative sizes and offsets. */
-/* The root canvas paints the full-bleed gradient (main.scss). */
+/* The banner owns its gradient so subsequent sections can scroll beneath it. */
 .hero {
-  position: fixed;
-  inset: 0;
-  overflow: visible;
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: linear-gradient(0deg, #7c7c7c 0%, #2b4e64 50%, #000 110%);
+  &__content {
+    position: absolute;
+    inset: 0;
+  }
+
+  @media (max-width: $break-s) {
+    background: linear-gradient(-45deg, #7c7c7c 0%, #2b4e64 50%, #000 110%);
+  }
 
   &__phone {
     position: absolute;
@@ -41,7 +64,6 @@
     width: min(54vh, 40vw);
     transform: translateX(-50%);
     pointer-events: none;
-
     img {
       display: block;
       width: 100%;
@@ -53,71 +75,30 @@
     position: absolute;
     top: 48vh;
     left: 4vw;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 2.8vw;
-    line-height: 0.9;
-    letter-spacing: -0.02em;
     color: #fff;
-
-    p {
-      margin: 0;
-    }
-
     .hero__tagline-sub {
       margin-top: 0.1em;
       opacity: 0.5;
     }
   }
 
-  &__logo {
-    position: absolute;
-    bottom: 4vh;
-    left: 4vw;
-    width: 7vw;
-    margin: 0;
-
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-  }
-
   &__badge {
-    display: inline-block;
     margin-top: 24px;
-    padding: 15px 30px;
-    border: 1px solid rgb(255 255 255 / 50%);
-    border-radius: 999px;
-    font-family: 'Geist Mono', ui-monospace, monospace;
-    font-size: 11px;
-    line-height: 1;
-    letter-spacing: 0.1em;
-    color: rgba(255,255,255,.7);
-
-    text-transform: uppercase;
-    white-space: nowrap;
+    color: rgba(255, 255, 255, .7);
   }
 
-  @media (min-width: 768px) {
-    &__logo {
-      top: 5vh;
-      bottom: auto;
-    }
-
+  @media (min-width: $break-s + 1px) {
     &__tagline {
       top: auto;
       bottom: 7vh;
       left: 4vw;
     }
-
   }
-
   /*
   Mobile: Figma frame 402 × 874, in px.
   Crop the phone above the screen; keep the text anchored to the bottom.
   */
-  @media (max-width: 767px) {
+  @media (max-width: $break-s) {
     &__badge {
       display: none;
     }
@@ -137,22 +118,12 @@
       bottom: calc(162px + env(safe-area-inset-bottom));
       left: 50%;
       width: 340px;
-      font-size: 26px;
       text-align: center;
       transform: translateX(-50%);
-
       .hero__tagline-sub {
         margin-top: 0.1em;
       }
     }
-
-    &__logo {
-      bottom: calc(61px + env(safe-area-inset-bottom));
-      left: 50%;
-      width: 86px;
-      transform: translateX(-50%);
-    }
-
   }
 }
 </style>

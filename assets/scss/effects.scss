@@ -1,0 +1,24 @@
+// Structure for the scroll-driven banner transition and split-text effects.
+.overlay {
+  display: grid;
+  position: absolute;
+  z-index: 4;
+  width: 100%;
+  height: 100vh;
+  bottom: 0;
+  pointer-events: none;
+  --columns: 1;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  div {
+    background: var(--color-bg-overlay);
+    transform: scaleY(0);
+  }
+
+  &__grey {
+    --color-bg-overlay: var(--bgcolor);
+  }
+}
+
+.splitting .word, .splitting .char {
+  display: inline-block;
+}

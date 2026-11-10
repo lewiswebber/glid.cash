@@ -1,54 +1,41 @@
+@use './variables' as *;
+@use './typography';
+@use './layout';
+@use './effects';
+@use './plus-grid';
 * {
-  &,
-  &::before,
-  &::after {
+  &, &::before, &::after {
     box-sizing: border-box;
   }
 }
 
-/*
-  Paint the gradient across the large viewport, including the space revealed
-  when Safari's toolbars retract. Content can use the smaller visible viewport.
-*/
-html,
-html.lenis,
-html.lenis body,
-body {
-  height: 100%;
+:root {
+  --bgcolor: #111;
+  --primarycolor: #fff;
+  --grey: #bababa;
+  --radius: .6vw;
+}
+
+html, body {
   margin: 0;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-
-html,
-body {
-  background-color: #7c7c7c;
-  background-image: linear-gradient(173deg, #7c7c7c 0%, #2b4e64 50%, #000 110%);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-
-  @media (max-width: 767px) {
-    background-image: linear-gradient(156deg, #7c7c7c 0%, #2b4e64 50%, #000 110%);
-  }
-
-  @supports (height: 100lvh) {
-    min-height: 100lvh;
-    background-size: 100% 100lvh;
-  }
-}
-
-body {
+  min-height: 100%;
   background-color: #000;
 }
 
 html {
-  color: #fff;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  color: var(--primarycolor);
 }
 
-img,
-svg {
+body {
+  background: var(--bgcolor);
+}
+
+img, svg {
   max-width: 100%;
+}
+
+@media (max-width: $break-s) {
+  :root {
+    --radius: 1svh;
+  }
 }
