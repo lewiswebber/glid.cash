@@ -12,6 +12,8 @@
 @use '~/assets/scss/variables' as *;
 
 .site-footer {
+  position: relative;
+  background-color: var(--bgcolor);
   padding-top: 0;
   padding-bottom: 0;
   color: var(--grey);

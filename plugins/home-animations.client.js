@@ -77,8 +77,26 @@ export default defineNuxtPlugin(() => {
               // Measure the non-animated banner, not the browser's changing viewport height.
               scrollTrigger: {
                 trigger: el.parentElement,
+                start: 'top -200',
+                end: 'bottom 200',
+                scrub
+              }
+            })
+          })
+
+          root.querySelectorAll('[effect__fadeOut2]').forEach(el => {
+            gsap.fromTo(el, {
+              opacity: 1,
+              yPercent: 0
+            }, {
+              ease: 'none',
+              opacity: 0,
+              yPercent: 100,
+              // Measure the non-animated banner, not the browser's changing viewport height.
+              scrollTrigger: {
+                trigger: el.parentElement,
                 start: 'top top',
-                end: 'bottom top',
+                end: mobile ? 'top -100' : 'top -300',
                 scrub
               }
             })

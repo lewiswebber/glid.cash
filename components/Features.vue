@@ -80,6 +80,9 @@ const getItemStyle = index => ({
 @use '~/assets/scss/variables' as *;
 
 .features-section {
+  padding-top: 0;
+  background-color: var(--bgcolor);
+
   @media (max-width: $break-s) {
     // Clip the fixed gradient to this section as it enters and leaves the viewport.
     clip-path: inset(0);
@@ -119,7 +122,6 @@ const getItemStyle = index => ({
     min-height: var(--stack-height-desktop);
     @media (max-width: $break-s) {
       min-height: 0;
-      padding-top: 10svh;
     }
   }
 

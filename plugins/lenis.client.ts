@@ -5,6 +5,7 @@ export default defineNuxtPlugin(nuxtApp => {
   const lenis = new Lenis({
     autoRaf: true,
     anchors: true,
+    
     smoothWheel: !reduceMotion
   })
   lenis.on('scroll', () => ScrollTrigger.update())
