@@ -1,6 +1,11 @@
 const siteUrl = 'https://glid.cash'
 const title = 'Glid — Non-custodial Bitcoin wallet for iOS'
 const description = 'Glid is a simple, beautifully designed non-custodial Bitcoin wallet for iOS. Coming soon.'
+// Match stud.house: production tracking by default, with an explicit override.
+const enableGtag = process.env.NUXT_PUBLIC_ENABLE_GTAG
+  ? process.env.NUXT_PUBLIC_ENABLE_GTAG === 'true'
+  : process.env.NODE_ENV === 'production'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: {
@@ -100,7 +105,18 @@ export default defineNuxtConfig({
         rel: 'manifest',
         href: '/site.webmanifest'
       }],
-      script: [{
+      script: [
+        ...(enableGtag ? [{
+          key: 'google-tag-init',
+          tagPriority: 10,
+          innerHTML: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date());"
+        }, {
+          key: 'google-tag-loader',
+          tagPriority: 11,
+          async: true,
+          src: 'https://www.googletagmanager.com/gtm.js?id=GTM-NLQTRHVK'
+        }] : []),
+        {
         type: 'application/ld+json',
         innerHTML: JSON.stringify({
           '@context': 'https://schema.org',
