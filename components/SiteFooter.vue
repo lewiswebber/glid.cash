@@ -3,7 +3,7 @@
     <div class="layout__third" aria-hidden="true" />
     <div class="site-footer__content layout__second">
       <span>Glid © {{ new Date().getFullYear() }}</span>
-      <a href="mailto:lewis@stud.house" class="hover_effect"><span>Contact</span></a>
+      <a href="mailto:wbbr.co@gmail.com" class="hover_effect"><span>Contact</span></a>
     </div>
   </footer>
 </template>
