@@ -1,8 +1,25 @@
+<script setup>
+const route = useRoute()
+const { $lenis } = useNuxtApp()
+
+function scrollHome(event) {
+  if (route.path !== '/' || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+
+  event.preventDefault()
+  const immediate = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if ($lenis) {
+    $lenis.scrollTo(0, { immediate })
+  } else {
+    window.scrollTo({ top: 0, behavior: immediate ? 'instant' : 'smooth' })
+  }
+}
+</script>
+
 <template>
   <header class="site-header">
     <div class="layout">
       <div class="layout__third">
-        <a href="/#top" class="logo" aria-label="Glid homepage">
+        <a href="/" class="logo" aria-label="Glid homepage" @click="scrollHome">
           <img src="/logo.svg" width="131" height="62" alt="Glid">
         </a>
       </div>

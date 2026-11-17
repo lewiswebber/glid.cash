@@ -3,7 +3,8 @@
     <div class="layout__third" aria-hidden="true" />
     <div class="site-footer__content layout__second">
       <span>Glid © {{ new Date().getFullYear() }}</span>
-      <NuxtLink to="/privacy" class="hover_effect"><span>Privacy Policy</span></NuxtLink>
+      <NuxtLink to="/privacy" class="hover_effect"><span>Privacy</span></NuxtLink>
+      <NuxtLink to="/terms" class="hover_effect"><span>Terms</span></NuxtLink>
       <a href="mailto:wbbr.co@gmail.com" class="hover_effect"><span>Contact</span></a>
     </div>
   </footer>

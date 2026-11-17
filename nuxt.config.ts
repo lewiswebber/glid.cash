@@ -133,7 +133,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     prerender: {
-      routes: ['/', '/privacy']
+      routes: ['/', '/privacy', '/terms']
     }
   }
 })

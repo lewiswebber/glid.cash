@@ -71,7 +71,7 @@ useHead({
         <p>
           We use this information to investigate problems and improve Glid. We do not share
           TestFlight testing data with third parties. Apple handles information under its own
-          <a href="https://www.apple.com/legal/privacy/data/en/test-flight/">TestFlight privacy notice</a>,
+          <a href="https://www.apple.com/legal/privacy/data/en/test-flight/" target="_blank" rel="noopener noreferrer">TestFlight privacy notice</a>,
           which explains its collection and retention practices.
         </p>
 
@@ -134,7 +134,7 @@ useHead({
         </p>
         <p>
           You may also complain to your local data protection authority. In the UK, this is the
-          <a href="https://ico.org.uk/make-a-complaint/">Information Commissioner’s Office (ICO)</a>.
+          <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">Information Commissioner’s Office (ICO)</a>.
         </p>
 
         <h2 class="monospace">009. Changes to This Policy</h2>
@@ -147,7 +147,7 @@ useHead({
         <h2 class="monospace">010. Contact</h2>
         <p>
           For privacy questions or requests, contact STUD LONDON LTD at
-          <a href="mailto:wbbr.co@gmail.com">wbbr.co@gmail.com</a>.
+          <a href="mailto:hello@stud.house">hello@stud.house</a>.
         </p>
       </article>
     </main>
