@@ -30,7 +30,7 @@
   }
 
   @media (max-width: $break-s) {
-    padding: 24px 20px;
+    padding: 24px 20px 104px;
     border-top: 1px solid rgb(255 255 255 / 20%);
 
     .layout__third {
