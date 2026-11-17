@@ -3,6 +3,7 @@
     <div class="layout__third" aria-hidden="true" />
     <div class="site-footer__content layout__second">
       <span>Glid © {{ new Date().getFullYear() }}</span>
+      <NuxtLink to="/privacy" class="hover_effect"><span>Privacy Policy</span></NuxtLink>
       <a href="mailto:wbbr.co@gmail.com" class="hover_effect"><span>Contact</span></a>
     </div>
   </footer>
@@ -22,6 +23,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
     padding: 2vw 0;
     border-top: 1px solid rgb(255 255 255 / 20%);
   }

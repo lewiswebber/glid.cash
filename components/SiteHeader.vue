@@ -2,7 +2,7 @@
   <header class="site-header">
     <div class="layout">
       <div class="layout__third">
-        <a href="#top" class="logo" aria-label="Glid homepage">
+        <a href="/#top" class="logo" aria-label="Glid homepage">
           <img src="/logo.svg" width="131" height="62" alt="Glid">
         </a>
       </div>
