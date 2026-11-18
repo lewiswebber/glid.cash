@@ -22,11 +22,15 @@ const settings = {
 	// Desktop entrance: scale from this as the section comes into view...
 	enterScale: 0.9,
 	// ...reaching full size when its top is this % down the viewport.
-	enterEnd: 50
+	enterEnd: 50,
+	// Safari (EXPERIMENTAL): rewind each video while its slide is fully covered, so it plays
+	// from the start like Chrome. Off = resumes where it paused. See "Screen recordings" below.
+	safariRestart: false
 }
 
 const root = ref(null)
 const sticky = ref(null)
+const videos = ref([])
 const count = computed(() => props.contents.slides.length)
 
 const style = computed(() => ({
@@ -81,34 +85,34 @@ const countStyle = index => ({
 
 const pad = number => String(number).padStart(2, '0')
 
-// JS fallback for browsers without CSS scroll-driven animations.
-// Geometry is measured only when layout changes, so each scroll frame reads just scrollY.
-let start = 0
-let range = 0
+// Slide position from scroll. Drives video playback outside WebKit, and, where CSS
+// scroll-driven animations aren't supported, the --s fallback styles too.
+const cssTimelines = import.meta.client && CSS.supports('animation-timeline: view()')
 let current = ''
+let lastValue = ''
 let frame = 0
-let resizeObserver
 
-function measure() {
-	const section = root.value
-	if (!section || !sticky.value) return
-	start = section.getBoundingClientRect().top + window.scrollY
-	// The sticky's 100svh, not innerHeight, which changes with mobile toolbars.
-	range = section.offsetHeight - sticky.value.offsetHeight
-	update()
-}
-
-// Writes the slide position (0 → count - 1) as --s; CSS derives every transform and fade from it.
 function update() {
 	frame = 0
 	const section = root.value
-	if (!section) return
-	const progress = range > 0 ? clamp((window.scrollY - start) / range, 0, 1) : 0
+	if (!section || !sticky.value) return
+	// The sticky's 100svh, not innerHeight, which changes with mobile toolbars.
+	const range = section.offsetHeight - sticky.value.offsetHeight
+	const rect = section.getBoundingClientRect()
+	const progress = range > 0 ? clamp(-rect.top / range, 0, 1) : 0
 	const position = positionAt(progress)
 	const value = position.toFixed(4)
-	// Skip the style write (and recalc) while pinned on a hold or outside the section.
-	if (value === current) return
-	current = value
+	// The position clamps at the first/last slide outside the section, so track on-screen separately.
+	const onScreen = rect.bottom > 0 && rect.top < window.innerHeight
+	// Within a screen of the viewport: early enough to load the first slide's video.
+	const near = rect.bottom > -window.innerHeight && rect.top < 2 * window.innerHeight
+	// Nothing to do while pinned on a hold or scrolling elsewhere on the page.
+	const key = `${value}${onScreen}${near}`
+	if (key === current) return
+	current = key
+	updateVideos(position, onScreen, near)
+	if (cssTimelines || value === lastValue) return
+	lastValue = value
 	section.style.setProperty('--s', value)
 	section.style.setProperty('--index', Math.round(position))
 }
@@ -117,23 +121,114 @@ const schedule = () => {
 	if (!frame) frame = requestAnimationFrame(update)
 }
 
+/*
+Screen recordings.
+
+A slide's visible share is 1 - |position - i|, since each slide covers the last. Play at
+60% visible, pause at 40%: adjacent slides' shares add up to 1, so one video always pauses
+before the next starts. Everything pauses while the section is off screen.
+
+Chrome etc.: each video loads once the section is within a screen of the viewport and the
+previous slide is showing (position > i - 1.5), is held on its first frame by a tiny seek
+(browsers otherwise keep the poster until playback), and restarts from 00:00 on each play.
+
+WebKit (desktop Safari, and every iOS browser): the Chrome version made Safari take 10-20s to
+start each video, while plain autoplay was smooth. So here every video starts exactly like
+plain autoplay (preload auto, loaded at mount), is paused the first time it starts playing
+unless its slide is showing (so it holds on its opening frame without a seek), and is then
+only ever played or paused: no load(), no preload changes, no seeks. With safariRestart, a
+video is rewound only while its slide is fully covered, never just before playing.
+
+Reduced motion: no playback anywhere; the poster stays.
+*/
+const PLAY_AT = 0.6
+const PAUSE_AT = 0.4
+// Seeking exactly to 0 can be skipped as a no-op while the poster is up.
+const FIRST_FRAME = 0.001
+const active = new Set()
+let controlled = false
+let webkit = false
+
+function isWebKit() {
+	const ua = navigator.userAgent
+	// iPadOS reports itself as a Mac; touch support gives it away.
+	const iOS = /iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)
+	const safari = /Safari\//.test(ua) && !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|Edg\/|OPR|Android/.test(ua)
+	return iOS || safari
+}
+
+function updateVideos(position, onScreen, near) {
+	if (!controlled) return
+	const visibility = video => onScreen ? 1 - Math.abs(position - Number(video.dataset.index)) : 0
+	// Pause first, so the outgoing video stops before the incoming one starts.
+	for (const video of active) {
+		if (visibility(video) > PAUSE_AT) continue
+		active.delete(video)
+		video.pause()
+	}
+	for (const video of videos.value) {
+		const index = Number(video.dataset.index)
+		if (!webkit && near && position > index - 1.5 && video.preload === 'none') {
+			video.preload = 'auto'
+			video.load()
+		}
+		const visible = visibility(video)
+		if (visible >= PLAY_AT && !active.has(video)) {
+			active.add(video)
+			if (!webkit) video.currentTime = 0
+			video.play().catch(() => {})
+		} else if (visible <= 0 && !active.has(video) && video.currentTime > FIRST_FRAME && (!webkit || settings.safariRestart)) {
+			// Fully covered: rewind so it's back on its first frame next time it's revealed.
+			video.currentTime = FIRST_FRAME
+		}
+	}
+}
+
+// Chrome etc.: once loaded, hold a video on its first frame (unless it's already playing).
+const showFirstFrame = event => {
+	const video = event.target
+	if (!active.has(video)) video.currentTime = FIRST_FRAME
+}
+
+// WebKit: the first time an autoplaying video starts, pause it unless its slide is showing.
+const holdOpeningFrame = event => {
+	const video = event.target
+	if (!active.has(video)) video.pause()
+}
+
+function setUpVideos() {
+	if (!videos.value.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+	controlled = true
+	webkit = isWebKit()
+	videos.value.forEach(video => {
+		if (!webkit) {
+			video.addEventListener('loadeddata', showFirstFrame)
+			return
+		}
+		video.addEventListener('playing', holdOpeningFrame, { once: true })
+		video.preload = 'auto'
+		video.autoplay = true
+		video.load()
+	})
+}
+
 onMounted(() => {
-	// CSS view timelines drive everything (see styles); no scroll handling needed.
-	if (CSS.supports('animation-timeline: view()')) return
-	// Content above (fonts, text splitting) can move the section without resizing it,
-	// so observe the whole document as well as the section.
-	resizeObserver = new ResizeObserver(measure)
-	resizeObserver.observe(document.documentElement)
-	resizeObserver.observe(root.value)
-	// Cheap per frame: one scrollY read, and no style write unless the position changed.
+	setUpVideos()
+	// Nothing to track when CSS runs the slideshow and there are no videos to control.
+	if (cssTimelines && !controlled) return
 	window.addEventListener('scroll', schedule, { passive: true })
-	measure()
+	window.addEventListener('resize', schedule)
+	update()
 })
 
 onBeforeUnmount(() => {
+	videos.value.forEach(video => {
+		video.removeEventListener('loadeddata', showFirstFrame)
+		video.removeEventListener('playing', holdOpeningFrame)
+	})
 	cancelAnimationFrame(frame)
 	window.removeEventListener('scroll', schedule)
-	resizeObserver?.disconnect()
+	window.removeEventListener('resize', schedule)
 })
 </script>
 
@@ -143,7 +238,8 @@ onBeforeUnmount(() => {
 			<div class="design__media">
 				<div v-for="(slide, index) in contents.slides" :key="slide.screen" class="design__slide" :style="slideStyle(index)">
 					<div class="design__layer" :style="{ '--from': slide.gradient[0], '--via': slide.gradient[1] }">
-						<picture class="design__phone">
+						<video v-if="slide.video" ref="videos" class="design__phone" :src="`/img/design/${slide.screen}.mp4`" :poster="`/img/design/${slide.screen}.jpg`" width="1260" height="2736" :data-index="index" :aria-label="slide.alt" muted loop playsinline preload="none" />
+						<picture v-else class="design__phone">
 							<source :srcset="`/img/design/${slide.screen}.avif`" type="image/avif">
 							<img :src="`/img/design/${slide.screen}.jpg`" width="804" height="1748" :alt="slide.alt" fetchpriority="low" decoding="async">
 						</picture>
@@ -251,6 +347,12 @@ Desktop sizes from the Figma 1665 frame, in vw.
 		margin: 0 auto;
 		overflow: hidden;
 		border-radius: calc(var(--screen-height) * 1cqh * 60 / 874);
+
+		// A video is the frame itself; an image fills its <picture> frame.
+		&:is(video) {
+			display: block;
+			object-fit: cover;
+		}
 
 		img {
 			display: block;
