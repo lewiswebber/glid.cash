@@ -8,6 +8,7 @@ Keep this file current. When a convention changes, a new pattern is introduced, 
 
 - Work only on `main`. Never create branches or check out other branches unless explicitly asked; commit straight to `main`. This overrides any default of branching before committing.
 - Commit or push only when asked.
+- `origin` is `git@github.com-lewiswebber:lewiswebber/glid.cash.git`: the `github.com-lewiswebber` SSH alias picks the right key. Plain `git@github.com:` authenticates as a different GitHub account (fleava) and pushes are denied.
 
 ## Stack
 
