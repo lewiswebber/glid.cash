@@ -1,6 +1,5 @@
 <script setup>
-// TODO: TestFlight CTA is hidden until the invite is ready; replace with its URL then.
-// const TESTFLIGHT_URL = '#'
+import { TESTFLIGHT_URL } from '~/assets/content/links'
 
 const route = useRoute()
 const router = useRouter()
@@ -12,7 +11,8 @@ const { $lenis, $scrollToSection } = useNuxtApp()
 const links = [
 	{ id: 'intro', label: 'About' },
 	{ id: 'design', label: 'Design' },
-	{ id: 'contact', label: 'Contact' }
+	// Hidden on mobile to make room for the TestFlight pill.
+	{ id: 'contact', label: 'Contact', desktopOnly: true }
 ]
 
 // Plain left clicks only; modified clicks (new tab, etc.) keep the default.
@@ -46,15 +46,12 @@ function scrollHome(event) {
 				<img src="/logo.svg" width="131" height="62" alt="Glid">
 			</NuxtLink>
 			<div class="site-header__links">
-				<a v-for="link in links" :key="link.id" :href="`/#${link.id}`" class="hover_effect" @click="goToSection($event, link.id)"><span>{{ link.label }}</span></a>
+				<a v-for="link in links" :key="link.id" :href="`/#${link.id}`" class="hover_effect" :class="{ 'site-header__link--desktop': link.desktopOnly }" @click="goToSection($event, link.id)"><span>{{ link.label }}</span></a>
 			</div>
 		</nav>
-		<!-- Hidden until TestFlight is ready.
-		<a :href="TESTFLIGHT_URL" class="site-header__cta site-header__pill hover_effect" target="_blank"
-			rel="noopener">
-			<span>Testflight</span>
+		<a :href="TESTFLIGHT_URL" class="site-header__cta site-header__pill hover_effect" target="_blank" rel="noopener">
+			<span>TestFlight</span>
 		</a>
-		-->
 	</header>
 </template>
 
@@ -120,8 +117,7 @@ function scrollHome(event) {
 	/* Mobile: one full-width bar along the bottom. */
 	@media (max-width: $break-s) {
 		bottom: calc(var(--edge) + env(safe-area-inset-bottom));
-		// 1fr auto again when the TestFlight CTA is back.
-		grid-template-columns: 1fr;
+		grid-template-columns: 1fr auto;
 		gap: 6px;
 
 		&__pill {
@@ -138,12 +134,16 @@ function scrollHome(event) {
 		}
 
 		&__logo img {
-			width: 44px;
+			width: 52px;
 		}
 
 		&__links {
 			gap: 1.4em;
 			padding-left: 10px;
+		}
+
+		&__link--desktop {
+			display: none;
 		}
 
 		&__cta {
