@@ -3,19 +3,31 @@
 // const TESTFLIGHT_URL = '#'
 
 const route = useRoute()
-const { $lenis } = useNuxtApp()
+const router = useRouter()
+const { $lenis, $scrollToSection } = useNuxtApp()
 
-// Homepage sections: same-page anchors on the homepage, full paths from the legal pages.
+// Homepage sections. Clicks scroll there without adding a #hash to the URL: on the homepage
+// directly, from other pages via history state (handled in plugins/lenis.client.ts). The
+// href keeps /#id so opening in a new tab, or without JS, still lands on the section.
 const links = [
 	{ id: 'intro', label: 'About' },
 	{ id: 'design', label: 'Design' },
 	{ id: 'contact', label: 'Contact' }
 ]
-const anchor = id => (route.path === '/' ? `#${id}` : `/#${id}`)
+
+// Plain left clicks only; modified clicks (new tab, etc.) keep the default.
+const isPlainClick = event => event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
+
+function goToSection(event, id) {
+	if (!isPlainClick(event)) return
+	event.preventDefault()
+	if (route.path === '/') $scrollToSection(id)
+	else router.push({ path: '/', state: { section: id } })
+}
 
 // On the homepage, the logo scrolls back to the top instead of reloading.
 function scrollHome(event) {
-	if (route.path !== '/' || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+	if (route.path !== '/' || !isPlainClick(event)) return
 
 	event.preventDefault()
 	const immediate = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -34,7 +46,7 @@ function scrollHome(event) {
 				<img src="/logo.svg" width="131" height="62" alt="Glid">
 			</NuxtLink>
 			<div class="site-header__links">
-				<a v-for="link in links" :key="link.id" :href="anchor(link.id)" class="hover_effect"><span>{{ link.label }}</span></a>
+				<a v-for="link in links" :key="link.id" :href="`/#${link.id}`" class="hover_effect" @click="goToSection($event, link.id)"><span>{{ link.label }}</span></a>
 			</div>
 		</nav>
 		<!-- Hidden until TestFlight is ready.
