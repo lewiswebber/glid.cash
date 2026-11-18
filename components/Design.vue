@@ -23,6 +23,10 @@ const settings = {
 	enterScale: 0.9,
 	// ...reaching full size when its top is this % down the viewport.
 	enterEnd: 50,
+	// Desktop exit: from when the section's bottom is this % down the viewport (to the top)...
+	leaveStart: 50,
+	// ...scaling down to this and fading out.
+	leaveScale: 0.9,
 	// Safari (EXPERIMENTAL): rewind each video while its slide is fully covered, so it plays
 	// from the start like Chrome. Off = resumes where it paused. See "Screen recordings" below.
 	safariRestart: false
@@ -42,7 +46,9 @@ const style = computed(() => ({
 	'--screen-top': settings.screenTop,
 	'--screen-height': settings.screenHeight,
 	'--enter-scale': settings.enterScale,
-	'--enter-end': `${100 - settings.enterEnd}%`
+	'--enter-end': `${100 - settings.enterEnd}%`,
+	'--leave-start': `${100 - settings.leaveStart}%`,
+	'--leave-scale': settings.leaveScale
 }))
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
@@ -515,13 +521,22 @@ Desktop sizes from the Figma 1665 frame, in vw.
 			}
 		}
 
-		// Desktop entrance: from "section top at viewport bottom" to "top at --enter-end".
+		/*
+		Desktop entrance and exit. Entrance: from "section top at viewport bottom" to "top at
+		--enter-end". Exit, the reverse: from "section bottom at --leave-start" to "bottom at
+		viewport top", scaling down and fading out. The exit doesn't fill backwards, so the
+		entrance's end state holds until the exit begins.
+		*/
 		@media (min-width: ($break-s + 1px)) and (prefers-reduced-motion: no-preference) {
 			&__sticky {
 				transform-origin: 50% 0;
-				animation: design-enter linear both;
-				animation-timeline: --design;
-				animation-range: entry 0% entry var(--enter-end);
+				animation:
+					design-enter linear both,
+					design-leave linear forwards;
+				animation-timeline: --design, --design;
+				animation-range:
+					entry 0% entry var(--enter-end),
+					exit var(--leave-start) exit 100%;
 			}
 		}
 
@@ -609,6 +624,20 @@ Desktop sizes from the Figma 1665 frame, in vw.
 	to {
 		opacity: 1;
 		transform: none;
+	}
+}
+
+@keyframes design-leave {
+	from {
+		transform-origin: 50% 100%;
+		transform: none;
+		opacity: 1;
+	}
+
+	to {
+		transform-origin: 50% 100%;
+		transform: scale(var(--leave-scale));
+		opacity: 0;
 	}
 }
 

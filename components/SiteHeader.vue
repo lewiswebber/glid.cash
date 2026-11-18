@@ -1,14 +1,19 @@
 <script setup>
-// TODO: replace with the public repository and TestFlight invite URLs.
-const OPEN_SOURCE_URL = '#'
-const TESTFLIGHT_URL = '#'
+// TODO: TestFlight CTA is hidden until the invite is ready; replace with its URL then.
+// const TESTFLIGHT_URL = '#'
 
 const route = useRoute()
 const { $lenis } = useNuxtApp()
 
-// Same-page anchors on the homepage; full paths from the legal pages.
+// Homepage sections: same-page anchors on the homepage, full paths from the legal pages.
+const links = [
+	{ id: 'intro', label: 'About' },
+	{ id: 'design', label: 'Design' },
+	{ id: 'contact', label: 'Contact' }
+]
 const anchor = id => (route.path === '/' ? `#${id}` : `/#${id}`)
 
+// On the homepage, the logo scrolls back to the top instead of reloading.
 function scrollHome(event) {
 	if (route.path !== '/' || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
 
@@ -25,21 +30,19 @@ function scrollHome(event) {
 <template>
 	<header class="site-header monospace">
 		<nav class="site-header__nav site-header__pill" aria-label="Main navigation">
-			<a href="/" class="site-header__logo" aria-label="Glid homepage" @click="scrollHome">
+			<NuxtLink to="/" class="site-header__logo" aria-label="Glid homepage" @click="scrollHome">
 				<img src="/logo.svg" width="131" height="62" alt="Glid">
-			</a>
+			</NuxtLink>
 			<div class="site-header__links">
-				<a :href="anchor('intro')" class="hover_effect"><span>About</span></a>
-				<a :href="anchor('design')" class="hover_effect"><span>Design</span></a>
-				<!-- "Open" on mobile to fit; the hover scramble (desktop) reads the full label. -->
-				<a :href="OPEN_SOURCE_URL" class="hover_effect" target="_blank" rel="noopener"
-					aria-label="Open source"><span>Open<span class="site-header__long">-Source</span></span></a>
+				<a v-for="link in links" :key="link.id" :href="anchor(link.id)" class="hover_effect"><span>{{ link.label }}</span></a>
 			</div>
 		</nav>
+		<!-- Hidden until TestFlight is ready.
 		<a :href="TESTFLIGHT_URL" class="site-header__cta site-header__pill hover_effect" target="_blank"
 			rel="noopener">
 			<span>Testflight</span>
 		</a>
+		-->
 	</header>
 </template>
 
@@ -105,7 +108,8 @@ function scrollHome(event) {
 	/* Mobile: one full-width bar along the bottom. */
 	@media (max-width: $break-s) {
 		bottom: calc(var(--edge) + env(safe-area-inset-bottom));
-		grid-template-columns: 1fr auto;
+		// 1fr auto again when the TestFlight CTA is back.
+		grid-template-columns: 1fr;
 		gap: 6px;
 
 		&__pill {
@@ -126,24 +130,13 @@ function scrollHome(event) {
 		}
 
 		&__links {
-			gap: 1em;
+			gap: 1.4em;
 			padding-left: 10px;
-		}
-
-		&__long {
-			display: none;
 		}
 
 		&__cta {
 			grid-column: 2;
 			min-width: 0;
-		}
-
-		// Narrowest phones: not enough room beside the CTA.
-		@media (max-width: 359px) {
-			&__links {
-				display: none;
-			}
 		}
 	}
 }

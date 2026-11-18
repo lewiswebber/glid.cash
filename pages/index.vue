@@ -21,6 +21,7 @@ onBeforeUnmount(() => {
 			<HomeBanner3D />
 			<HomeIntro />
 			<Design :contents="design" id="design" />
+			<HomeContact />
 		</main>
 		<SiteFooter />
 	</div>

@@ -41,7 +41,7 @@ export const design = {
 	slides: [{
 		screen: 1,
 		video: true,
-		title: 'Make it yours',
+		title: 'Make it Yours',
 		paragraphs: [
 			"Give each wallet its own colours and theme, carried through every screen of the app, so each one has a personality of its own. The more familiar your money feels, the easier it becomes to look after.",
 			"Whether you’re putting bitcoin aside for the future or keeping some ready to spend, separate wallets give each part of your money a purpose. You can see what belongs where without having to keep track in your head."
@@ -51,7 +51,7 @@ export const design = {
 	}, {
 		screen: 2,
 		video: true,
-		title: 'Sending made simple',
+		title: 'Payments Made Simple',
 		paragraphs: [
 			"Paste an address or scan a QR code, choose how much, and you’re ready to go. Amounts show in your own currency, so you always know what you’re sending.",
 			"There’s no jargon to decode along the way, just a clear check before anything leaves your wallet. Afterwards, the payment sits in your history, easy to recognise when you look back."
@@ -61,7 +61,7 @@ export const design = {
 	}, {
 		screen: 3,
 		video: true,
-		title: 'Calm by design',
+		title: 'Calm by Design',
 		paragraphs: [
 			"Taking care of your own bitcoin can feel like a big step. Glid makes that first move easier to understand, with a straightforward backup experience and keys that stay on your phone, under your control.",
 			"Once you’re settled in, you can see how your holdings have changed without being drawn into watching every price movement. There’s room to hold your bitcoin and get on with your day."
@@ -71,7 +71,7 @@ export const design = {
 	}, {
 		screen: 4,
 		video: true,
-		title: 'Free and open',
+		title: 'Free and Open',
 		paragraphs: [
 			"When an app looks after something as personal as your money, you should be able to see how it works. Glid’s code will be public, so anyone can examine how it handles keys and check the decisions behind it.",
 			"That openness extends to the whole app on your phone. Everything from organising your wallets to sending and receiving bitcoin will be free and open source."
