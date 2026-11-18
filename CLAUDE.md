@@ -2,13 +2,7 @@
 
 Marketing site for Glid, an open-source, self-custody Bitcoin wallet for iPhone (in development, TestFlight first). A single landing page (`/`) plus legal pages (`/privacy`, `/terms`), prerendered as a static site.
 
-Keep this file current. When a convention changes, a new pattern is introduced, or something non-obvious is learned, update the relevant section here in the same change.
-
-## Git
-
-- Work only on `main`. Never create branches or check out other branches unless explicitly asked; commit straight to `main`. This overrides any default of branching before committing.
-- Commit or push only when asked.
-- `origin` is `git@github.com-lewiswebber:lewiswebber/glid.cash.git`: the `github.com-lewiswebber` SSH alias picks the right key. Plain `git@github.com:` authenticates as a different GitHub account (fleava) and pushes are denied.
+This repository is public and part of Glid's open-source project, so this file is written for anyone working on the site. Keep it current: when a convention changes, a new pattern is introduced, or something non-obvious is learned, update the relevant section here in the same change. Personal or machine-specific notes (local setup, individual workflow) go in `CLAUDE.local.md`, which is git-ignored.
 
 ## Stack
 
@@ -16,7 +10,7 @@ Keep this file current. When a convention changes, a new pattern is introduced, 
 - SCSS (sass), no CSS framework. Do not add Tailwind or a UI library.
 - GSAP + ScrollTrigger for scroll effects, Lenis for smooth scrolling, Splitting for word splits.
 - Three.js for the 3D phone in the banner, on all screen sizes (loaded client-side only).
-- Node: the Nuxt CLI needs Node ≥ 20.12. The default `/usr/local/bin/node` (20.10) fails; use nvm's v24: `PATH=~/.nvm/versions/node/v24.19.0/bin:$PATH npm run generate`.
+- Node ≥ 20.12 (the Nuxt CLI fails on older versions). `npm run dev` for development, `npm run generate` for the static build.
 - Tests: `node --test tests/*.test.mjs` (currently just the text-scramble animator).
 
 ## Layout of the codebase
@@ -31,7 +25,7 @@ Keep this file current. When a convention changes, a new pattern is introduced, 
 - `components/HomeBanner.vue`: static-image version of the banner, not on the page; the fallback if the 3D phone ever needs dropping on mobile.
 - `components/SiteFooter.vue`: footer (copyright left; Privacy and Terms right); its bottom padding clears the fixed nav.
 - `components/HomeIntro.vue`: section.
-- `assets/content/home.js`: `features` copy, and `design` (its own copy, written to match each slide's screen recording, plus alt text and gradient colours; only the first paragraph shows on mobile, so it carries the main point). Long-form product copy lives in `assets/glid-overview.md` (git-ignored, local only).
+- `assets/content/home.js`: `features` copy, and `design` (its own copy, written to match each slide's screen recording, plus alt text and gradient colours; only the first paragraph shows on mobile, so it carries the main point).
 - `plugins/home-animations.client.js`: all scroll effects, driven by attributes:
   - `data-splitting`: split into `.word` spans (Splitting inserts `.whitespace` spans between words).
   - `effect__textFade`: words fade in on scroll (container).
@@ -90,7 +84,7 @@ Keep this file current. When a convention changes, a new pattern is introduced, 
 
 - British English (colours, organise), plain language, no crypto jargon or hype.
 - Lowercase "bitcoin" for the currency, "Bitcoin" for the network/protocol, as in the existing copy.
-- Short, calm sentences. Matches the tone in `assets/glid-overview.md`.
+- Short, calm sentences.
 - Short headings (slide and section titles) use Title Case, e.g. "Make it Yours", "Payments Made Simple", "Glid is Coming Soon.". Full-sentence headlines (banner, intro) stay in sentence case.
 
 ## Pending
