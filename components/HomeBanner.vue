@@ -1,120 +1,133 @@
 <template>
-  <section class="hero">
-    <div class="hero__content" effect__fadeOut>
-      <picture class="hero__phone">
-        <source srcset="/phone.avif" type="image/avif">
-        <img src="/phone.webp" width="510" height="904" alt="Glid app showing a wallet balance of $12,708.48"
-          fetchpriority="high" decoding="async">
-      </picture>
+	<section class="hero">
+		<div class="hero__content" effect__fadeOut>
+			<picture class="hero__phone">
+				<source srcset="/phone.avif" type="image/avif">
+				<img src="/phone.webp" width="510" height="904" alt="Glid app showing a wallet balance of $12,708.48"
+					fetchpriority="high" decoding="async">
+			</picture>
 
-      <div class="hero__tagline">
-        <h1 class="text-lead">Bitcoin. Made simple.</h1>
-        <p class="hero__tagline-sub text-lead">Multi-wallet, Self-custody,<br>Open-source.</p>
-        <span class="hero__badge monospace pill">Coming soon</span>
-      </div>
-
-
-
-    </div>
-    <!-- <div class="overlay overlay__grey hide__mobile" effect__overlayIn aria-hidden="true"></div> -->
-  </section>
+			<div class="hero__tagline">
+				<!-- The badge follows the h1 so it stays out of the heading; CSS places it above. -->
+				<div class="hero__headline">
+					<h1 class="text-title">Bitcoin wallet that feels like <em>yours.</em></h1>
+					<p class="hero__badge monospace opacity__50">Coming soon</p>
+				</div>
+			</div>
+		</div>
+	</section>
 </template>
 
 <style scoped lang="scss">
 @use '~/assets/scss/variables' as *;
 
-/* Desktop layout uses rounded viewport-relative sizes and offsets. */
-/* The banner owns its gradient so subsequent sections can scroll beneath it. */
+/* Desktop sizes in vw/svh; the gradient scrolls with the page. */
 .hero {
-  position: relative;
-  height: 100vh;
-  height: 100svh;
-  overflow: hidden;
-  background: linear-gradient(0deg, #7c7c7c 0%, #2b4e64 50%, #000 110%);
+	position: relative;
+	height: 100vh;
+	height: 100svh;
+	overflow: hidden;
+	background: linear-gradient(180deg, #7c7c7c 0%, #2b4e64 50%, #000 100%);
 
-  &__content {
-    position: absolute;
-    inset: 0;
-    height: 100%
-  }
+	&__content {
+		position: absolute;
+		inset: 0;
+	}
 
-  @media (max-width: $break-s) {
-    background: linear-gradient(170deg, #7c7c7c 0%, #2b4e64 50%, #000 110%);
-  }
+	@media (max-width: $break-s) {
+		background: linear-gradient(170deg, #7c7c7c 0%, #2b4e64 50%, #000 110%);
+	}
 
-  &__phone {
-    position: absolute;
-    top: -9%;
-    left: 50%;
-    /* Sized off viewport height (904 / 945 tall), capped at 40vw so it can't run into the tagline */
-    width: min(54svh, 40vw);
-    transform: translateX(-50%);
-    pointer-events: none;
+	&__phone {
+		position: absolute;
+		top: -9%;
+		left: 50%;
+		// Sized off the viewport height, capped at 40vw so it can't run into the tagline.
+		width: min(54svh, 40vw);
+		transform: translateX(-50%);
+		pointer-events: none;
 
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-  }
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
 
-  &__tagline {
-    position: absolute;
-    top: 48svh;
-    left: 4vw;
-    color: #fff;
+	/* Centred headline (Figma 1665 frame: 74px, vertically centred). */
+	&__tagline {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 6vw;
+		color: #fff;
+		text-align: center;
+		pointer-events: none;
+	}
 
-    .hero__tagline-sub {
-      margin-top: 0.1em;
-      opacity: 0.5;
-    }
-  }
+	&__headline {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 
-  &__badge {
-    margin-top: 24px;
-    color: rgba(255, 255, 255, .7);
-  }
+	&__badge {
+		order: -1;
+		margin-bottom: 1.2vw;
+		padding: .5em 1.4em;
+		border: 1px solid currentColor;
+		border-radius: 999px;
+		white-space: nowrap;
+	}
 
-  @media (min-width: $break-s) {
-    &__tagline {
-      top: auto;
-      bottom: 7svh;
-      left: 4vw;
-    }
-  }
+	// Desktop: above the gap between "like" and "yours", anchored to the <em>.
+	// Without anchor positioning it stays centred above the headline.
+	@supports (anchor-name: --a) {
+		@media (min-width: ($break-s + 1px)) {
+			em {
+				anchor-name: --hero-yours;
+			}
 
-  /*
-  Mobile: Figma frame 402 × 874, in px.
-  Crop the phone above the screen; keep the text anchored to the bottom.
-  */
-  @media (max-width: $break-s) {
-    &__badge {
-      display: none;
-    }
+			&__badge {
+				position: absolute;
+				position-anchor: --hero-yours;
+				bottom: anchor(top);
+				left: anchor(left);
+				margin-bottom: .6vw;
+				translate: -50% 0;
+			}
+		}
+	}
 
-    &__phone {
-      // Use the stable banner height: dvh changes as mobile browser bars retract.
-      top: -35svh;
-      bottom: auto;
-      left: 50%;
-      width: 390px;
-      margin-left: -220px;
-      transform: none;
-    }
+	/*
+	Mobile: Figma frame 402 × 874, in px.
+	Crop the phone above the screen; keep the text anchored to the bottom.
+	*/
+	@media (max-width: $break-s) {
+		&__phone {
+			top: -35svh;
+			left: 50%;
+			width: 390px;
+			margin-left: -220px;
+			transform: none;
+		}
 
-    &__tagline {
-      top: auto;
-      bottom: calc(150px + env(safe-area-inset-bottom));
-      left: 50%;
-      width: 340px;
-      text-align: center;
-      transform: translateX(-50%);
+		/* Mobile keeps the bottom-centred tagline above the nav. */
+		&__badge {
+			margin-bottom: 16px;
+		}
 
-      .hero__tagline-sub {
-        margin-top: 0.1em;
-      }
-    }
-  }
+		&__tagline {
+			align-items: flex-end;
+			padding: 0 0 calc(150px + env(safe-area-inset-bottom));
 
+			h1 {
+				width: 340px;
+			}
+		}
+	}
 }
 </style>

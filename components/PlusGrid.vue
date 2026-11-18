@@ -1,79 +1,57 @@
 <template>
-  <div class="plus-grid" aria-hidden="true">
-    <span class="plus-grid__cell plus-grid__cell--left" />
-    <span class="plus-grid__cell plus-grid__cell--center" />
-    <span class="plus-grid__cell plus-grid__cell--right" />
-    <span class="plus-grid__cell plus-grid__cell--bottom-right" />
-  </div>
+	<div class="plus-grid" aria-hidden="true">
+		<span class="plus-grid__cell plus-grid__cell--left" />
+		<span class="plus-grid__cell plus-grid__cell--right" />
+	</div>
 </template>
 
 <style scoped lang="scss">
 @use '~/assets/scss/variables' as *;
-// Four fixed marks: three across the middle, plus bottom right.
+// Two fixed marks, vertically centred on the left and right edges.
 .plus-grid {
-  --left-edge: 3vw;
-  --right-edge: 3vw;
-  --bottom-edge: max(24px, 3vw);
-  --mark: '+';
-  --mark-color: #888;
-  --mark-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --mark-size: 2vw;
-  --mark-weight: 300;
-  @media (max-width: $break-s) {
-    --mark-size: 3vh;
-  }
+	--mark: '+';
+	--mark-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	--mark-size: 1.9vw;
+	--mark-weight: 300;
+	@media (max-width: $break-s) {
+		--mark-size: 3vh;
+	}
 
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  pointer-events: none;
-  user-select: none;
-  mix-blend-mode: difference;
-  opacity: 1;
-  &__cell {
-    position: absolute;
-    top: 50%;
-    display: grid;
-    place-items: center;
-    transform: translate(-50%, -50%);
-    &--left {
-      left: var(--left-edge);
-    }
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	pointer-events: none;
+	user-select: none;
+	color: rgb(255 255 255 / 60%);
 
-    &--center {
-      left: 50%;
-    }
+	&__cell {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
 
-    &--right {
-      left: calc(100% - var(--right-edge));
-    }
+		&--left {
+			left: var(--edge);
+		}
 
-    &--bottom-right {
-      left: calc(100% - var(--right-edge));
-      top: calc(100% - var(--bottom-edge));
-    }
+		&--right {
+			right: var(--edge);
+		}
 
-    &::before {
-      content: var(--mark);
-      color: var(--mark-color);
-      font-family: var(--mark-font);
-      font-size: var(--mark-size);
-      font-weight: var(--mark-weight);
-      line-height: 1;
-      letter-spacing: 0;
-    }
-  }
-
-  // Mobile logo has 20px of layout padding plus 20px of logo padding.
-  // Contact is hidden on mobile; retain its header right inset.
-  @media (max-width: $break-s) {
-    --left-edge: 40px;
-  }
+		&::before {
+			display: block;
+			content: var(--mark);
+			font-family: var(--mark-font);
+			font-size: var(--mark-size);
+			font-weight: var(--mark-weight);
+			line-height: 1;
+			letter-spacing: 0;
+		}
+	}
 }
 
 @media print {
-  .plus-grid {
-    display: none;
-  }
+	.plus-grid {
+		display: none;
+	}
 }
 </style>

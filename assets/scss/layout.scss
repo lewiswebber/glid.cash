@@ -1,89 +1,51 @@
 @use './variables' as *;
 .layout {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 100%;
-  padding: 1.5vw 3vw;
-  &__third {
-    width: 33%;
-  }
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	width: 100%;
+	padding: 1.5vw 3vw;
+	&__third {
+		width: 33%;
+	}
 
-  &__second {
-    width: 66%;
-  }
+	&__second {
+		width: 66%;
+	}
 
-  @media (max-width: $break-s) {
-    display: block;
-    padding: 10px 20px;
-    &__third, &__second {
-      width: 100%;
-    }
+	@media (max-width: $break-s) {
+		display: block;
+		padding: 10px 20px;
+		&__third, &__second {
+			width: 100%;
+		}
 
-    &__third.monospace {
-      padding-bottom: 40px;
-    }
-  }
+		&__third.monospace {
+			padding-bottom: 40px;
+		}
+	}
 }
 
 .section {
-  position: relative;
-  padding: 5vw 0 10vw;
-  --color: var(--primarycolor);
-  background-color: var(--background);
-  color: var(--color);
-  &__grey {
-    --background: var(--bgcolor);
-    --color: var(--grey);
-  }
+	position: relative;
+	padding: 5vw 0 10vw;
+	--color: var(--primarycolor);
+	background-color: var(--background);
+	color: var(--color);
+	&__grey {
+		--background: var(--bgcolor);
+		--color: var(--grey);
+	}
 
-  &__black {
-    --background: #000;
-    --color: var(--grey);
-  }
-
-  &__lightgrey {
-    --background: #666;
-    --color: #000;
-  }
-
-  &__grad {
-    background: linear-gradient(0deg, #123043 -20%, #000 80%, #000 100%);
-    --color: var(--grey);
-  }
-
-  
-
-
-
-  @media (max-width: $break-s) {
-    padding: 30px 0 60px;
-  }
-}
-
-.no__pt {
-  padding-top: .3vw;
+	@media (max-width: $break-s) {
+		padding: 30px 0 60px;
+	}
 }
 
 .block {
-  display: block;
+	display: block;
 }
 
 .opacity__50 {
-  opacity: .5;
-}
-
-.hide__mobile {
-  @media (max-width: $break-s) {
-    display: none;
-  }
-}
-
-// Shared outline treatment for badges and contact links.
-.pill {
-  display: inline-block;
-  padding: 15px 30px;
-  border: 1px solid color-mix(in srgb, currentColor 50%, transparent);
-  border-radius: 999px;
-  white-space: nowrap;
+	opacity: .5;
 }

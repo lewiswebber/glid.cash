@@ -1,24 +1,51 @@
-// Structure for the scroll-driven banner transition and split-text effects.
-.overlay {
-  display: grid;
-  position: absolute;
-  z-index: 4;
-  width: 100%;
-  height: 100vh;
-  bottom: 0;
-  pointer-events: none;
-  --columns: 1;
-  grid-template-columns: repeat(var(--columns), 1fr);
-  div {
-    background: var(--color-bg-overlay);
-    transform: scaleY(0);
-  }
-
-  &__grey {
-    --color-bg-overlay: var(--bgcolor);
-  }
+@use './variables' as *;
+// Splitting wraps words for the text effects in home-animations.client.js.
+.splitting .word, .splitting .char {
+	display: inline-block;
 }
 
-.splitting .word, .splitting .char {
-  display: inline-block;
+/*
+Banner tagline fades. Where supported they run on the browser's own scroll timeline, which
+stays in step with scrolling while iOS Safari's toolbar resizes; JS scroll handlers lag
+behind it and jitter. home-animations.client.js keeps the GSAP version as the fallback.
+Both banners sit at the top of the page, so the root scroll offset is the banner's progress.
+*/
+@supports (animation-timeline: scroll()) {
+	@media (prefers-reduced-motion: no-preference) {
+		[effect__fadeOut2] {
+			animation: tagline-fade-down linear both;
+			animation-timeline: scroll(root);
+			animation-range: 0 100px;
+		}
+
+		[effect__fadeOut] {
+			animation: tagline-fade-half linear both;
+			animation-timeline: scroll(root);
+			animation-range: 200px calc(100svh - 200px);
+
+			@media (max-width: $break-s) {
+				animation-name: tagline-fade;
+			}
+		}
+	}
+}
+
+@keyframes tagline-fade-down {
+	to {
+		opacity: 0;
+		transform: translateY(100%);
+	}
+}
+
+@keyframes tagline-fade-half {
+	to {
+		opacity: 0;
+		transform: translateY(50%);
+	}
+}
+
+@keyframes tagline-fade {
+	to {
+		opacity: 0;
+	}
 }

@@ -4,41 +4,47 @@
 @use './layout';
 @use './effects';
 * {
-  &, &::before, &::after {
-    box-sizing: border-box;
-  }
+	&, &::before, &::after {
+		box-sizing: border-box;
+	}
 }
 
 :root {
-  --bgcolor: #111;
-  --primarycolor: #fff;
-  --grey: #bababa;
-  --radius: .6vw;
+	--bgcolor: #111;
+	--primarycolor: #fff;
+	--grey: #bababa;
+	--card: #282828;
+	--radius: .6vw;
+	// Large cards (Figma: 15px at 1665).
+	--radius-l: .9vw;
+	// Outer inset shared by the fixed nav and plus marks (Figma: 31px at 1665).
+	--edge: 1.875vw;
 }
 
 html, body {
-  margin: 0;
-  min-height: 100%;
-  background-color: #000;
-  
+	margin: 0;
+	min-height: 100%;
+	background-color: #000;
 }
 
 html {
-  color: var(--primarycolor);
-  // height: 100svh;
-  // overflow: hidden;
+	color: var(--primarycolor);
+	height: 100svh;
+	// overflow: hidden;
 }
 
 body {
-  background: var(--bgcolor);
+	background: var(--bgcolor);
 }
 
 img, svg {
-  max-width: 100%;
+	max-width: 100%;
 }
 
 @media (max-width: $break-s) {
-  :root {
-    --radius: 1svh;
-  }
+	:root {
+		--radius: 1svh;
+		--radius-l: 12px;
+		--edge: 10px;
+	}
 }
