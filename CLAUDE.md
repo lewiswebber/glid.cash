@@ -4,6 +4,11 @@ Marketing site for Glid, an open-source, self-custody Bitcoin wallet for iPhone 
 
 Keep this file current. When a convention changes, a new pattern is introduced, or something non-obvious is learned, update the relevant section here in the same change.
 
+## Git
+
+- Work only on `main`. Never create branches or check out other branches unless explicitly asked; commit straight to `main`. This overrides any default of branching before committing.
+- Commit or push only when asked.
+
 ## Stack
 
 - Nuxt 3 (Vue 3, `<script setup>`), statically generated: `npm run generate` → `.output/public`.
