@@ -259,6 +259,7 @@ onBeforeUnmount(() => {
 						<h3 class="text-lead">{{ slide.title }}</h3>
 						<div class="design__description monospace opacity__50">
 							<p v-for="paragraph in slide.paragraphs" :key="paragraph">{{ paragraph }}</p>
+							<small v-if="slide.note" class="design__note">{{ slide.note }}</small>
 						</div>
 					</article>
 				</div>
@@ -406,6 +407,13 @@ Desktop sizes from the Figma 1665 frame, in vw.
 		p + p {
 			margin-top: 1.2em;
 		}
+	}
+
+	// Short aside under a slide's copy; a <small>, so the mobile p + p rule leaves it showing.
+	&__note {
+		display: block;
+		margin-top: 1.2em;
+		font-size: inherit;
 	}
 
 	// Figma: "01 —— 04" along the card bottom; white 30% track, white fill.

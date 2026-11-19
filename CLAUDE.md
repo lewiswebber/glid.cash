@@ -25,7 +25,7 @@ This repository is public and part of Glid's open-source project, so this file i
 - `components/HomeBanner.vue`: static-image version of the banner, not on the page; the fallback if the 3D phone ever needs dropping on mobile.
 - `components/SiteFooter.vue`: footer (copyright left; Privacy and Terms right); its bottom padding clears the fixed nav.
 - `components/HomeIntro.vue`: section.
-- `assets/content/home.js`: `features` copy, and `design` (its own copy, written to match each slide's screen recording, plus alt text and gradient colours; only the first paragraph shows on mobile, so it carries the main point).
+- `assets/content/home.js`: `features` copy, and `design` (its own copy, written to match each slide's screen recording, plus alt text, gradient colours and an optional `note` (a short aside under the copy, shown on mobile too); only the first paragraph shows on mobile, so it carries the main point).
 - `plugins/home-animations.client.js`: all scroll effects, driven by attributes:
   - `data-splitting`: split into `.word` spans (Splitting inserts `.whitespace` spans between words).
   - `effect__textFade`: words fade in on scroll (container).

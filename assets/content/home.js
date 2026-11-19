@@ -76,6 +76,7 @@ export const design = {
 			"When an app looks after something as personal as your money, you should be able to see how it works. Glid’s code will be public, so anyone can examine how it handles keys and check the decisions behind it.",
 			"That openness extends to the whole app on your phone. Everything from organising your wallets to sending and receiving bitcoin will be free and open source."
 		],
+		note: '[Public repo coming soon]',
 		alt: 'Glid savings wallet, then receiving bitcoin with a QR code and address',
 		gradient: ['#7c7c7c', '#395340']
 	}]

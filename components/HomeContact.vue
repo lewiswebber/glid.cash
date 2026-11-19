@@ -12,7 +12,7 @@ import { TESTFLIGHT_URL } from '~/assets/content/links'
 				<div class="contact__content layout__second" effect__textFade>
 					<h2 id="contact-title" class="contact__title text-title" data-splitting>Glid is Coming Soon.</h2>
 					<p class="text-large" data-splitting>Most Bitcoin wallets are cold and technical, built for experts. So many people leave their bitcoin on exchanges, because holding it themselves feels risky and confusing. We’re making Glid to close that gap, with a wallet that’s pleasant to open and easy to understand.</p>
-					<p class="text-large" data-splitting>We’re getting the first version ready for iPhone, and you can try a very early build now through Apple’s TestFlight. If you’d like to join the beta, have a question, or just want to say hello, we’d love to hear from you.</p>
+					<p class="text-large" data-splitting>We’re getting the first version ready for iPhone, and you can try a very early build now through Apple’s TestFlight. For now it’s UI only, using sample data, so no real bitcoin is involved. If you’d like to join the beta, have a question, or just want to say hello, we’d love to hear from you.</p>
 				</div>
 				<div class="contact__action layout__second">
 					<a :href="TESTFLIGHT_URL" class="contact__link text-large hover_effect" target="_blank" rel="noopener"><span>Join the Glid beta (TestFlight)</span></a>
